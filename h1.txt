@@ -1,0 +1,89 @@
+What is a correct way to declare a Python variable?Answer: x = 5
+
+True or False: You can declare string variables with single or double quotes.Answer: TrueExample: x = "John" is the same as x = 'John'
+
+True or False: Variable names are not case-sensitive.Answer: FalseExample: a = 5 is not the same as A = 5
+
+Select the correct function to print the data type of a variable.Answer: print(type(myvar))
+
+What is the correct file extension for Python files?Answer: .py
+
+What is a correct command line syntax for checking if Python is installed on your computer?Answer: python --version
+
+What is a correct syntax to exit the Python command line interface?Answer: exit()
+
+True or False: Indentation in Python is for readability only.Answer: FalseIndentation is crucial for code execution.
+
+Which character is used to define a Python comment?Answer: #
+
+Write a single-line comment in Python.Answer: # This is a comment
+
+Use a multiline string to make a multiline comment.Answer:
+
+'''
+This is a comment
+written in
+more than just one line
+'''
+
+Which is NOT a legal variable name?Answer: my-var = 20 (hyphens are not allowed)
+
+Correct syntax to assign "Hello World" to multiple variables in one line.Answer: x = y = z = 'Hello World'
+
+What will be the result of the following code?
+
+fruits = ['apple', 'banana', 'cherry']
+a, b, c = fruits
+print(a)
+
+Answer: apple
+
+Consider the following code: print('Hello', 'World'). What will be printed?Answer: Hello World
+
+What will be the result of print(a + b) if a = 'Hello' and b = 'World'?Answer: HelloWorld
+
+What will be the result of print(a + b) if a = 4 and b = 5?Answer: 9
+
+Insert the correct keyword to make the variable x global inside the function.Answer:
+
+def myfunc():
+global x
+x = "fantastic"
+
+What is the data type of x = 5?Answer: int
+
+What is the data type of x = 20.5?Answer: float
+
+What will be the result of the following code?
+
+x = 'Welcome'
+print(x[3])
+
+Answer: c
+
+Use the len function to print the length of the string x = "Hello World".Answer: print(len(x))
+
+Insert the correct keyword to check if the word 'free' is present in the text:
+
+txt = 'The best things in life are free!'
+if 'free' in txt:
+print('Yes, free is present in the text.')
+
+What is a correct syntax to merge variables x and y into variable z?Answer: z = x + y
+
+What will be the result of the following code?
+
+x = 'Welcome'
+y = 'Coders'
+print(x + y)
+
+Answer: WelcomeCoders
+
+Consider this code:
+
+a = 'Join'
+b = 'the'
+c = 'party'
+
+What is a correct syntax to print 'Join the party'?Answer: print(a + ' ' + b + ' ' + c)
+
