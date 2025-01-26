@@ -1,0 +1,52 @@
+Python Booleans (https://www.w3schools.com/python/python_booleans.asp)
+
+1.What will be the result of the following syntax:
+print(5 > 3)
+Answer: True
+
+2. The statement below would print a Boolean value, which one?
+print(10 > 9)
+Answer: True
+
+3. print(10 == 9)?
+Answer: False
+
+4. print(10 < 9)?
+Answer: False
+
+5. print(bool("abc"))?
+Answer: True
+
+6. print(bool(0))?
+Answer: False
+
+Python Operators (https://www.w3schools.com/python/python_operators.asp)
+1. What will be the result of the following syntax:
+x = 5
+x += 3
+print(x)
+Answer: 8
+
+2. Multiply 10 with 5, and print the result.
+Answer: print(10 * 5)
+
+3. Divide 10 by 2, and print the result.
+Answer: print(10 / 2)
+
+4. Use the correct membership operator to check if "apple" is present in the fruits object.
+Answer: 
+fruits = ["apple", "banana"]
+if "apple" in fruits:
+  print("Yes, apple is a fruit!")
+
+5. Use the correct comparison operator to check if 5 is not equal to 10.
+Answer: 
+if 5 != 10:
+  print("5 and 10 is not equal")
+
+6. Use the correct logical operator to check if at least one of two statements is True.
+Answer: 
+if 5 == 10 or 4 == 4:
+  print("At least one of the statements is true")
+
+7. 
