@@ -4,18 +4,15 @@ import sys
 from pygame.locals import *
 import random
 import time
-
-# Initialzing
 pygame.init()
 
 # Setting up FPS
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
-# Creating colors
 BLUE = (0, 0, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+RED = (134, 0, 0)
+GREEN = (0, 254, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
@@ -24,16 +21,16 @@ SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
-pygame.mixer.music.load('./lab_8,9/racer/background.wav')
+pygame.mixer.music.load('./racer/background.wav')
 pygame.mixer.music.play(-1)
 # Setting up Fonts
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
 
-background = pygame.image.load("./lab_8,9/racer/AnimatedStreet.png")
+background = pygame.image.load("./racer/AnimatedStreet.png")
 
-# Create a white screen
+#white screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen.fill(WHITE)
 pygame.display.set_caption("RACER")
@@ -42,7 +39,7 @@ pygame.display.set_caption("RACER")
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("./lab_8,9/racer/Enemy.png")
+        self.image = pygame.image.load("./racer/Enemy.png")
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0)
 
@@ -58,8 +55,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(
-            "./lab_8,9/racer/Player1.png"), (100, 110))
+        self.image = pygame.transform.scale(pygame.image.load("./racer/Player1.png"), (100, 110))
         self.rect = self.image.get_rect()
         self.rect.center = (200, 500)
 
@@ -78,7 +74,7 @@ class Player(pygame.sprite.Sprite):
 class Coins (pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("./lab_8,9/racer/coins.png")
+        self.image = pygame.image.load("./racer/coins.png")
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(20, SCREEN_WIDTH-20),
                             random.randint(20, SCREEN_HEIGHT-20))
@@ -132,7 +128,7 @@ while True:
     # To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
         pygame.mixer.music.stop()
-        pygame.mixer.music.load('./lab_8,9/racer/crash.wav')
+        pygame.mixer.music.load('./racer/crash.wav')
         pygame.mixer.music.play()
         time.sleep(1.5)
         screen.fill(RED)
@@ -151,7 +147,7 @@ while True:
 
     # if pygame.sprite.spritecollideany(P1,C):4
     if pygame.sprite.spritecollideany(P1, coins):
-        pygame.mixer.Sound('./lab_8,9/racer/coinss.mp3').play()
+        pygame.mixer.Sound('./racer/coinss.mp3').play()
         SCORE += 1
         C.move()
 
