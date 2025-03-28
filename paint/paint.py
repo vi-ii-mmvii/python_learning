@@ -59,9 +59,9 @@ def draw_status():
 
 
 while running:
-    screen.fill(WHITE)  # Clear the screen
-    screen.blit(canvas, (0, 0))  # Draw the canvas
-    draw_status()  # Update the status bar
+    screen.fill(WHITE)  #screen cleaning
+    screen.blit(canvas, (0, 0))  
+    draw_status()  # Update  status bar
 
     # Handle keyboard shortcuts for color selection
     keys = pygame.key.get_pressed()

@@ -10,9 +10,9 @@ pygame.display.set_caption("Clock")
 clock = pygame.time.Clock()
 
 
-bg = pygame.image.load("lab_7/clock/clock.jpg")
-second_hand = pygame.image.load("lab_7/clock/sec.png")
-minute_hand = pygame.image.load("lab_7/clock/min.png")
+bg = pygame.image.load("clock/clock.jpg")
+second_hand = pygame.image.load("clock/sec.png")
+minute_hand = pygame.image.load("clock/min.png")
 
 
 def blit_rotate(image, pos, angle):
