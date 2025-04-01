@@ -4,7 +4,7 @@ import datetime
 pygame.init()
 
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 1440, 1080
+SCREEN_WIDTH, SCREEN_HEIGHT = 1440, 1440
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Clock")
 clock = pygame.time.Clock()
@@ -26,8 +26,7 @@ while running:
     clock.tick(60)
     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or \
-            (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             running = False
 
     now = datetime.datetime.now()
