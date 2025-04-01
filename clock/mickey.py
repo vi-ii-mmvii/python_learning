@@ -4,7 +4,7 @@ import datetime
 pygame.init()
 
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 1440, 1440
+SCREEN_WIDTH, SCREEN_HEIGHT = 1440, 1050
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Clock")
 clock = pygame.time.Clock()
