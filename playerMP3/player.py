@@ -7,7 +7,7 @@ MUSIC_PATH = "./playerMP3/music"
 TRACKS = sorted(os.listdir(MUSIC_PATH))
 
 pygame.init()
-screen = pygame.display.set_mode((500, 300))
+screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Music Player")
 
 font_main = pygame.font.Font('freesansbold.ttf', 20)
@@ -25,7 +25,6 @@ def play_track():
     pygame.mixer.music.load(os.path.join(MUSIC_PATH, TRACKS[current_track]))
     pygame.mixer.music.play()
     
-
 def toggle_play_pause():
     global playing
     playing = not playing
@@ -33,7 +32,6 @@ def toggle_play_pause():
         play_track()
     else:
         pygame.mixer.music.pause()
-
 
 def draw_screen():
     screen.fill((240, 240, 240))
