@@ -58,10 +58,21 @@ def draw_status():
             pygame.draw.rect(screen, BLACK, (rect_x - 2, 8, 24, 24), 2)
 
 
+def handle_color_selection(pos):
+    """
+    Handles color selection from the palette.
+    """
+    for i, color in enumerate(colors):
+        rect_x = WIDTH - 300 + i * 30
+        if rect_x <= pos[0] <= rect_x + 20 and 10 <= pos[1] <= 30:
+            return color
+    return None
+
+
 while running:
-    screen.fill(WHITE)  #screen cleaning
-    screen.blit(canvas, (0, 0))  
-    draw_status()  # Update  status bar
+    screen.fill(WHITE)  # screen cleaning
+    screen.blit(canvas, (0, 0))
+    draw_status()  # Update status bar
 
     # Handle keyboard shortcuts for color selection
     keys = pygame.key.get_pressed()
@@ -109,6 +120,9 @@ while running:
                 drawing = True
                 start_pos = event.pos
                 prev_pos = event.pos
+                selected_color = handle_color_selection(event.pos)
+                if selected_color:
+                    current_color = selected_color
 
         elif event.type == pygame.MOUSEBUTTONUP:  # Stop drawing
             if event.button == 1:  # LMB
