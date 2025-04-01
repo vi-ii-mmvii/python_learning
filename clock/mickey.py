@@ -31,8 +31,8 @@ while running:
 
     now = datetime.datetime.now()
 
-    second_angle = -now.second / 60 * 360 + 145
-    minute_angle = -now.minute / 60 * 360 + 145
+    second_angle = -now.second * 6 + 90
+    minute_angle = -now.minute * 6 + 90
 
     center_pos = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
