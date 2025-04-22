@@ -1,14 +1,10 @@
-import psycopg2
-
-from config import db_config
+import sqlite3
+import csv
 
 
 # Database connection
 def connect():
-    try:
-        return psycopg2.connect(**db_config)
-    except (psycopg2.DatabaseError, Exception) as error:
-        print(error)
+    return sqlite3.connect("phonebook.db")
 
 
 # Create table
@@ -17,10 +13,10 @@ def create_table():
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS phonebook (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(30),
-            surname VARCHAR(30),
-            phone VARCHAR(15)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            surname TEXT,
+            phone TEXT
         )
     """)
     conn.commit()
@@ -31,19 +27,18 @@ def create_table():
 def insert_from_csv(file_path):
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute(
-        "COPY phonebook (name, surname, phone) "
-        f"FROM '{file_path}' "
-        "DELIMITER ',' "
-        "CSV HEADER")
-    cursor.execute("""
-        DELETE FROM phonebook a
-        USING phonebook b
-        WHERE a.id > b.id
-        AND a.name = b.name
-        AND a.surname = b.surname
-        AND a.phone = b.phone
-    """)
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            cursor.execute("""
+                SELECT COUNT(*) FROM phonebook
+                WHERE name = ? AND surname = ? AND phone = ?
+            """, (row['name'], row['surname'], row['phone']))
+            if cursor.fetchone()[0] == 0:
+                cursor.execute("""
+                    INSERT INTO phonebook (name, surname, phone)
+                    VALUES (?, ?, ?)
+                """, (row['name'], row['surname'], row['phone']))
     conn.commit()
     conn.close()
 
@@ -63,13 +58,15 @@ def insert_from_console():
             break
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute(
-            "SELECT COUNT(*) FROM phonebook WHERE name = %s AND surname = %s AND phone = %s",
-            (name, surname, phone))
+        cursor.execute("""
+            SELECT COUNT(*) FROM phonebook
+            WHERE name = ? AND surname = ? AND phone = ?
+        """, (name, surname, phone))
         if cursor.fetchone()[0] == 0:
-            cursor.execute(
-                "INSERT INTO phonebook (name, surname, phone) "
-                "VALUES (%s, %s, %s)", (name, surname, phone))
+            cursor.execute("""
+                INSERT INTO phonebook (name, surname, phone)
+                VALUES (?, ?, ?)
+            """, (name, surname, phone))
             conn.commit()
             print("Record inserted successfully.")
         else:
@@ -92,16 +89,13 @@ def update_data():
         choice = input("Choose an option: ")
         if choice == "1":
             new_name = input("Enter new name: ")
-            cursor.execute("UPDATE phonebook SET name = %s WHERE id = %s",
-                           (new_name, user_id))
+            cursor.execute("UPDATE phonebook SET name = ? WHERE id = ?", (new_name, user_id))
         elif choice == "2":
             new_surname = input("Enter new surname: ")
-            cursor.execute("UPDATE phonebook SET surname = %s WHERE id = %s",
-                           (new_surname, user_id))
+            cursor.execute("UPDATE phonebook SET surname = ? WHERE id = ?", (new_surname, user_id))
         elif choice == "3":
             new_phone = input("Enter new phone: ")
-            cursor.execute("UPDATE phonebook SET phone = %s WHERE id = %s",
-                           (new_phone, user_id))
+            cursor.execute("UPDATE phonebook SET phone = ? WHERE id = ?", (new_phone, user_id))
         elif choice.lower() == "q":
             break
         else:
@@ -124,17 +118,14 @@ def query_data():
         print("[q] Quit Query")
         choice = input("Choose an option: ")
         if choice == "1":
-            filter_name = input("Enter name to filter: ")
-            cursor.execute(
-                "SELECT * FROM phonebook WHERE name = %s", (filter_name,))
+            value = input("Enter name: ")
+            cursor.execute("SELECT * FROM phonebook WHERE name = ?", (value,))
         elif choice == "2":
-            filter_surname = input("Enter surname to filter: ")
-            cursor.execute(
-                "SELECT * FROM phonebook WHERE surname = %s", (filter_surname,))
+            value = input("Enter surname: ")
+            cursor.execute("SELECT * FROM phonebook WHERE surname = ?", (value,))
         elif choice == "3":
-            filter_phone = input("Enter phone to filter: ")
-            cursor.execute(
-                "SELECT * FROM phonebook WHERE phone = %s", (filter_phone,))
+            value = input("Enter phone: ")
+            cursor.execute("SELECT * FROM phonebook WHERE phone = ?", (value,))
         elif choice == "4":
             cursor.execute("SELECT * FROM phonebook")
         elif choice.lower() == "q":
@@ -151,6 +142,7 @@ def query_data():
             for row in rows:
                 row = [value if value is not None else "" for value in row]
                 print(f"{row[0]:<5} {row[1]:<15} {row[2]:<15} {row[3]:<15}")
+
         else:
             print("No records found.")
     conn.close()
@@ -165,7 +157,7 @@ def delete_data():
         _id = input("Enter ID to delete (or 'q' to quit): ")
         if _id.lower() == 'q':
             break
-        cursor.execute("DELETE FROM phonebook WHERE id = %s", (_id,))
+        cursor.execute("DELETE FROM phonebook WHERE id = ?", (_id,))
         conn.commit()
         print(f"Record(s) with ID '{_id}' deleted.")
     conn.close()
@@ -195,7 +187,7 @@ def main():
         print("[2] Insert from Console")
         print("[3] Update Data")
         print("[4] Query Data")
-        print("[5] Delete Data by Name")
+        print("[5] Delete Data by ID")
         print("[6] Clear Table")
         print("[q] Exit")
         choice = input("Choose an option: ")

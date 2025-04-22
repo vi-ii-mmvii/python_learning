@@ -1,14 +1,10 @@
-import psycopg2
-import json
-from config import db_config
+import sqlite3
 
+DB_NAME = "phonebook.db"
 
-# Database connection
+# Connect to SQLite
 def connect():
-    try:
-        return psycopg2.connect(**db_config)
-    except (psycopg2.DatabaseError, Exception) as error:
-        print(error)
+    return sqlite3.connect(DB_NAME)
 
 
 # Create table
@@ -17,17 +13,17 @@ def create_table():
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS phonebook (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(30),
-            surname VARCHAR(30),
-            phone VARCHAR(15)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            surname TEXT,
+            phone TEXT
         )
     """)
     conn.commit()
     conn.close()
 
 
-# Insert from console using stored procedure
+# Insert or update from console
 def insert_from_console():
     while True:
         print("\n[Insert Data]")
@@ -40,21 +36,32 @@ def insert_from_console():
         phone = input("Enter phone (or 'q' to quit): ")
         if phone.lower() == 'q':
             break
+
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute("CALL insert_or_update_user(%s, %s, %s)",
-                       (name, surname, phone))
+        # Check if user exists
+        cursor.execute("SELECT id FROM phonebook WHERE name = ? AND surname = ?", (name, surname))
+        result = cursor.fetchone()
+        if result:
+            cursor.execute("UPDATE phonebook SET phone = ? WHERE id = ?", (phone, result[0]))
+            print("User updated.")
+        else:
+            cursor.execute("INSERT INTO phonebook (name, surname, phone) VALUES (?, ?, ?)", (name, surname, phone))
+            print("User inserted.")
         conn.commit()
-        print("User inserted/updated.")
         conn.close()
 
 
-# Search by pattern using function
+# Search by pattern
 def search_by_pattern():
     pattern = input("\nEnter pattern to search (in name/surname/phone): ")
+    pattern = f"%{pattern}%"
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM search_phonebook(%s)", (pattern,))
+    cursor.execute("""
+        SELECT * FROM phonebook 
+        WHERE name LIKE ? OR surname LIKE ? OR phone LIKE ?
+    """, (pattern, pattern, pattern))
     rows = cursor.fetchall()
     if rows:
         print("\n[Search Results]")
@@ -78,8 +85,7 @@ def view_paginated():
         return
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM get_paginated_phonebook(%s, %s)", (limit, offset))
+    cursor.execute("SELECT * FROM phonebook LIMIT ? OFFSET ?", (limit, offset))
     rows = cursor.fetchall()
     if rows:
         print("\n[Paginated Results]")
@@ -93,12 +99,15 @@ def view_paginated():
     conn.close()
 
 
-# Delete using stored procedure
+# Delete by value
 def delete_by_value():
     value = input("Enter name/surname/phone to delete: ")
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("CALL delete_by_name_or_phone(%s)", (value,))
+    cursor.execute("""
+        DELETE FROM phonebook 
+        WHERE name = ? OR surname = ? OR phone = ?
+    """, (value, value, value))
     conn.commit()
     conn.close()
     print(f"Records with value '{value}' deleted.")
