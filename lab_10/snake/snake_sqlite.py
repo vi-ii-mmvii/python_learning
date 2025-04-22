@@ -12,16 +12,14 @@ def connect():
     return sqlite3.connect('snake_game.db')
 
 
-# Constants
 WINDOW_SIZE = 500
 BLOCK_SIZE = 20
 GRID_SIZE = WINDOW_SIZE // BLOCK_SIZE
 INFO_PANEL_WIDTH = 150
 FPS = 6
 
-# Colors
 WHITE = (255, 255, 255)
-GREEN = (0, 150, 0)
+GREEN = (0, 157, 0)
 RED = (150, 0, 0)
 BLUE = (0, 0, 200)
 BLACK = (0, 0, 0)
